@@ -11,6 +11,6 @@ Replace image name from `gcr.io/kubeflow-images-staging/census-estimator` to ano
 skaffold run
 ```
 
-This builds your image, pushes it to the registry and runs the tfjob with the updated image.
+This builds your image, tags it with the commit id, pushes it to the registry and runs the tfjob with the updated image.
 
 Run `skaffold delete` to delete your job.
