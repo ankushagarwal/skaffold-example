@@ -1,0 +1,14 @@
+apiVersion: skaffold/v1alpha2
+kind: Config
+build:
+  artifacts:
+  - imageName: gcr.io/kubeflow-images-staging/census-estimator
+deploy:
+  kubectl:
+    manifests:
+      - tfjob.yaml
+profiles:
+  - name: gcb
+    build:
+      googleCloudBuild:
+        projectId: k8s-skaffold

@@ -1,0 +1,85 @@
+apiVersion: "kubeflow.org/v1alpha2"
+kind: "TFJob"
+metadata:
+  name: "census-estimator"
+  namespace: default
+spec:
+  tfReplicaSpecs:
+    PS:
+      replicas: 1
+      restartPolicy: Never
+      template:
+        spec:
+          containers:
+            - name: tensorflow
+              image: gcr.io/kubeflow-images-staging/census-estimator
+              command:
+              - python
+              - -m
+              - trainer.task
+              - --train-files
+              - /data/adult.data.csv
+              - --eval-files
+              - /data/adult.test.csv
+              - --train-steps
+              - "100000"
+              - --eval-steps
+              - "100"
+              - --job-dir
+              - /tmp
+              env:
+              - name: PYTHONPATH
+                value: "/"
+    Chief:
+      replicas: 1
+      restartPolicy: Never
+      template:
+        spec:
+          containers:
+            - name: tensorflow
+              image: gcr.io/kubeflow-images-staging/census-estimator
+              command:
+              - python
+              - -m
+              - trainer.task
+              - --train-files
+              - /data/adult.data.csv
+              - --eval-files
+              - /data/adult.test.csv
+              - --train-steps
+              - "100000"
+              - --eval-steps
+              - "100"
+              - --job-dir
+              - /tmp
+              env:
+              - name: PYTHONPATH
+                value: "/"
+    WORKER:
+      replicas: 3
+      restartPolicy: Never
+      template:
+        spec:
+          containers:
+            - name: tensorflow
+              image: gcr.io/kubeflow-images-staging/census-estimator
+              command:
+              - python
+              - -m
+              - trainer.task
+              - --train-files
+              - /data/adult.data.csv
+              - --eval-files
+              - /data/adult.test.csv
+              - --train-steps
+              - "100000"
+              - --eval-steps
+              - "100"
+              - --job-dir
+              - /tmp
+              resources:
+                limits:
+                  nvidia.com/gpu: 1
+              env:
+              - name: PYTHONPATH
+                value: "/"
